@@ -95,8 +95,8 @@ def read_pricing_model_data(file_path):
     return data
 
 # Call the function to get the extracted data
-file_path = './pricing_model.xlsx'
-pricing_model_data = read_pricing_model_data(file_path)
+# file_path = './pricing_model.xlsx'
+# pricing_model_data = read_pricing_model_data(file_path)
 
-# Display the extracted data
-print(pricing_model_data)
+# # Display the extracted data
+# print(pricing_model_data)
