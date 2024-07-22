@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # -----------------------------------------------------
     # Export results as excel file
     # -----------------------------------------------------
-    cf_proj_list = [t_index_col, is_cover_col, pol_month_col, pol_year_col,
+    cf_proj_list = [t_index_col, is_cover_col, pol_month_col, pol_year_col, age_col,
                     rfr_proj_tab, disc_fact_tab,
                     mort_tab, lapse_tab, pol_count_proj,
                     unit_cf_pp_proj, risk_cf_pp_proj, shf_cf_pp_proj,
