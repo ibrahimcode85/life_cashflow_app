@@ -1,5 +1,5 @@
 # Development dependencies
-black
+black==24.4.2
 
 # Project dependencies
 pandas==2.2.2
