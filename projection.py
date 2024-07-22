@@ -312,7 +312,7 @@ def generate_risk_fund_cashflows_table(unit_cashflow_df, mort_rates_df, rfr_df, 
         if i > 0:
             risk_fund_bop_pp.append(risk_fund_eop_pp[i-1])
         
-        inv_inc = (risk_fund_bop_pp[i] + insurance_charge_pp[i] - insurance_claim_pp[i]) * rfr_df['RiskFree_perMonth'][i]
+        inv_inc = (risk_fund_bop_pp[i] + insurance_charge_pp[i]) * rfr_df['RiskFree_perMonth'][i]
         risk_fund_invinc_pp.append(inv_inc)
         
         surplus_shf = (risk_fund_bop_pp[i] + insurance_charge_pp[i] - insurance_claim_pp[i] + inv_inc) * surplus_share_to_shf
