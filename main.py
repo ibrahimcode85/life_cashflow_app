@@ -1,5 +1,6 @@
 import projection as prj
 import data_read as read
+import pandas as pd
 
 
 if __name__ == "__main__":
@@ -34,6 +35,11 @@ if __name__ == "__main__":
     MORT_TABLE  = pricing_model_data['Table_Mortality'      ]
     LAPSE_TABLE = pricing_model_data['Table_Lapse'          ]
     
+    # ----end of procedure----------------------------------------------
+
+
+    # -----------------------------------------------------
+    # Produce projections cashflows
     # -----------------------------------------------------
 
     # Initiate main columns
@@ -62,11 +68,46 @@ if __name__ == "__main__":
     risk_cf_if_proj = prj.generate_cashflow_if_df (risk_cf_pp_proj, pol_count_proj)
     shf_cf_if_proj  = prj.generate_cashflow_if_df (shf_cf_pp_proj , pol_count_proj)
 
+    # ----end of procedure----------------------------------------------
+
+    # -----------------------------------------------------
+    # Calculate Preset Values of cashflow
+    # -----------------------------------------------------
+
     # Calculate PV of cashflow
     unit_cf_PV = prj.generate_pv_cashflows_df (unit_cf_if_proj, disc_fact_tab)
     risk_cf_PV = prj.generate_pv_cashflows_df (risk_cf_if_proj, disc_fact_tab)
     shf_cf_PV  = prj.generate_pv_cashflows_df (shf_cf_if_proj , disc_fact_tab)
 
-    print(unit_cf_pp_proj.head())
+    # ----end of procedure----------------------------------------------
+
+
+    # -----------------------------------------------------
+    # Export results as excel file
+    # -----------------------------------------------------
+    cf_proj_list = [t_index_col, is_cover_col, pol_month_col, pol_year_col,
+                    rfr_proj_tab, disc_fact_tab,
+                    mort_tab, lapse_tab, pol_count_proj,
+                    unit_cf_pp_proj, risk_cf_pp_proj, shf_cf_pp_proj,
+                    unit_cf_if_proj, risk_cf_if_proj, shf_cf_if_proj]
+    
+    cf_proj_table = prj.append_dataframes(cf_proj_list)
+
+     # Define Excel output name
+    output_file = "pricing_model_py_output.xlsx"
+
+    # Write data to Excel
+    with pd.ExcelWriter(output_file) as writer:
+        # Write cashflow projection table to "cashflow_proj" sheet
+        cf_proj_table.to_excel(writer, sheet_name="Cashflow_Proj", index=False)
+
+        # Write PV results to "pv_results" sheet
+        pv_results = pd.concat([unit_cf_PV, risk_cf_PV, shf_cf_PV])
+        pv_results.to_excel(writer, sheet_name="PV_Results", index=False)
+
+    print("Excel file has been created successfully.")
+
+    # ----end of procedure----------------------------------------------
+
 
 # proj_df = append_dataframes([t_index_col, is_cover_col, pol_month_col, pol_year_col, age_col])
