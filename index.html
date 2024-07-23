@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Cashflow Projection</title>
+  </head>
+  <body>
+    <div class="app-main-title">Life Cashflow Projection Model</div>
+    <div class="user-input-wrapper">
+      <div class="user-action">
+        <button class="submit-button">Submit</button>
+      </div>
+      <div class="user-input">
+        <label for="filePath">Excel File Path:</label>
+        <input
+          type="text"
+          id="filePath"
+          name="filePath"
+          required
+          placeholder="C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app"
+        /><br /><br />
+        <div class="input-title">Person Covered's Profile</div>
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required /><br /><br />
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender" required /><br /><br />
+        <div class="input-title">Contract Features</div>
+        <label for="polYear">Coverage Period:</label>
+        <input type="text" id="polYear" name="polYear" required /><br /><br />
+        <label for="sumAssured">Sum Assured:</label>
+        <input
+          type="text"
+          id="sumAssured"
+          name="sumAssured"
+          required
+        /><br /><br />
+        <label for="contributionPerYear">Contribution:</label>
+        <input
+          type="text"
+          id="contributionPerYear"
+          name="contributionPerYear"
+          required
+        /><br /><br />
+        <p>Surplus Sharing Ratio</p>
+        <label for="surplusShareToParticipant">Participant's Portion:</label>
+        <input
+          type="text"
+          id="surplusShareToParticipant"
+          name="surplusShareToParticipant"
+          required
+        /><br /><br />
+        <label for="surplusShareToShf">Operator's Portion:</label>
+        <input
+          type="text"
+          id="surplusShareToShf"
+          name="surplusShareToShf"
+          required
+        /><br /><br />
+        <div class="input-title">Contract Fees & Charges</div>
+        <label for="tabWakalahFee">Wakalah Fee Table:</label>
+        <input
+          type="text"
+          id="tabWakalahFee"
+          name="tabWakalahFee"
+          required
+        /><br /><br />
+        <label for="wakalahFmc">Fund Management Charge:</label>
+        <input
+          type="text"
+          id="wakalahFmc"
+          name="wakalahFmc"
+          required
+        /><br /><br />
+        <label for="coiLoading">Takaful Charge Loading:</label>
+        <input
+          type="text"
+          id="coiLoading"
+          name="coiLoading"
+          required
+        /><br /><br />
+        <div class="input-title">Expense Assumptions</div>
+        <label for="expensePerContributionPerYear"
+          >Per Contribution Expenses:</label
+        >
+        <input
+          type="text"
+          id="expensePerContributionPerYear"
+          name="expensePerContributionPerYear"
+          required
+        /><br /><br />
+        <label for="expensePerFundPerYear">Fund Management Expenses:</label>
+        <input
+          type="text"
+          id="expensePerFundPerYear"
+          name="expensePerFundPerYear"
+          required
+        /><br /><br />
+        <div class="input-title">Decrements Assumptions</div>
+        <label for="tabMortalityRates">Mortality Table:</label>
+        <input
+          type="text"
+          id="tabMortalityRates"
+          name="tabMortalityRates"
+          required
+        /><br /><br />
+        <label for="tabLapseRate">Lapse Table:</label>
+        <input
+          type="text"
+          id="tabLapseRate"
+          name="tabLapseRate"
+          required
+        /><br /><br />
+        <div class="input-title">Economic Assumptions</div>
+        <label for="tabRiskFreeRates">Risk Free Rates Table:</label>
+        <input
+          type="text"
+          id="tabRiskFreeRates"
+          name="tabRiskFreeRates"
+          required
+        /><br /><br />
+      </div>
+    </div>
+    <div class="app-logo"></div>
+    <!-- <script src="index.js"></script> -->
+  </body>
+</html>
