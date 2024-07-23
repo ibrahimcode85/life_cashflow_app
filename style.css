@@ -1,0 +1,135 @@
+:root {
+  /* color scheme */
+  --main-bg-color: #f3f3f3;
+  --header-bg-color: #ffffff;
+  --section-bg-color: #ffffff;
+  --theme-color: #52c08d;
+  --text-primary-color: #333;
+  --text-secondary-color: #666;
+
+  --main-border-style: 1px solid #f3f3f3;
+  --main-shadow-style: 8px 3px 10px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin: 15px 0px;
+  padding: 0;
+  background-color: var(--main-bg-color);
+  color: var(--text-secondary-color);
+}
+
+.app-main-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+.app-content-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Button Item --------------------- */
+.user-action {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px;
+}
+
+.submit-button {
+  background-color: #007bff; /* Blue background color */
+  color: white; /* White text color */
+  border: none; /* No border */
+  padding: 10px 20px; /* Padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* No underline */
+  display: inline-block; /* Inline-block display */
+  font-size: 1.2rem; /* Font size */
+  font-weight: bold;
+  /* margin: 10px 2px; Margin */
+  cursor: pointer; /* Pointer cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+/* Hover effect for the button */
+.submit-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Focus effect for accessibility */
+.submit-button:focus {
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add blue shadow */
+}
+
+/* end of Button Item --------------------- */
+
+.user-input-wrapper,
+.app-image {
+  width: 45%;
+  margin: 15px;
+  padding: 15px;
+  border: var(--main-border-style);
+  box-shadow: var(--main-shadow-style);
+  background-color: var(--section-bg-color);
+}
+
+.app-image {
+  padding: 0px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.input-wrapper#file-path {
+  display: flex;
+  flex-direction: unset;
+  font: 1.2rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+.input-wrapper .input-child-wrapper {
+  margin: 5px;
+}
+
+.input-child-wrapper#surplus-sharing {
+  margin-top: 15px;
+}
+
+.input-title {
+  font: 1.2rem;
+  font-weight: bold;
+  margin: 5px 0px;
+  color: var(--theme-color);
+}
+
+input {
+  width: 50%;
+}
+
+.input-wrapper#file-path input {
+  width: 60%;
+  margin-left: 5px;
+}
+
+label {
+  display: inline-block;
+  width: 215px;
+}
+
+.app-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill; /* Cover the entire div */
+}

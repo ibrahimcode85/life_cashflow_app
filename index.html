@@ -3,125 +3,169 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Life Cashflow Projection</title>
   </head>
   <body>
     <div class="app-main-title">Life Cashflow Projection Model</div>
-    <div class="user-input-wrapper">
-      <div class="user-action">
-        <button class="submit-button">Submit</button>
+    <div class="app-content-wrapper">
+      <div class="user-input-wrapper">
+        <div class="user-action">
+          <button class="submit-button">Submit</button>
+        </div>
+        <div class="user-input">
+          <div class="input-wrapper" id="file-path">
+            <label for="filePath">Excel File Path</label>
+            <input
+              type="text"
+              id="filePath"
+              name="filePath"
+              required
+              placeholder="C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app"
+            />
+          </div>
+          <div class="input-wrapper" id="person-covered-profile">
+            <div class="input-title">Person Covered's Profile</div>
+            <div class="input-child-wrapper">
+              <label for="age">Age:</label>
+              <input type="text" id="age" name="age" required />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="gender">Gender:</label>
+              <input type="text" id="gender" name="gender" required />
+            </div>
+          </div>
+
+          <div class="input-wrapper" id="contract-features">
+            <div class="input-title">Contract Features</div>
+            <div class="input-child-wrapper">
+              <label for="polYear">Coverage Period:</label>
+              <input type="text" id="polYear" name="polYear" required />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="sumAssured">Sum Assured:</label>
+              <input type="text" id="sumAssured" name="sumAssured" required />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="contributionPerYear">Contribution:</label>
+              <input
+                type="text"
+                id="contributionPerYear"
+                name="contributionPerYear"
+                required
+              />
+            </div>
+            <div class="input-child-wrapper" id="surplus-sharing">
+              <div>Surplus Sharing Ratio:</div>
+              <div class="input-child-wrapper">
+                <label for="surplusShareToParticipant"
+                  >Participant's Portion:</label
+                >
+                <input
+                  type="text"
+                  id="surplusShareToParticipant"
+                  name="surplusShareToParticipant"
+                  required
+                />
+              </div>
+              <div class="input-child-wrapper">
+                <label for="surplusShareToShf">Operator's Portion:</label>
+                <input
+                  type="text"
+                  id="surplusShareToShf"
+                  name="surplusShareToShf"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="input-wrapper" id="fees-charges">
+            <div class="input-title">Contract Fees & Charges</div>
+            <div class="input-child-wrapper">
+              <label for="tabWakalahFee">Wakalah Fee Table:</label>
+              <input
+                type="text"
+                id="tabWakalahFee"
+                name="tabWakalahFee"
+                required
+              />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="wakalahFmc">Fund Management Charge:</label>
+              <input type="text" id="wakalahFmc" name="wakalahFmc" required />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="coiLoading">Takaful Charge Loading:</label>
+              <input type="text" id="coiLoading" name="coiLoading" required />
+            </div>
+          </div>
+          <div class="input-wrapper" id="expense-assump">
+            <div class="input-title">Expense Assumptions</div>
+            <div class="input-child-wrapper">
+              <label for="expensePerContributionPerYear"
+                >Per Contribution Expenses:</label
+              >
+              <input
+                type="text"
+                id="expensePerContributionPerYear"
+                name="expensePerContributionPerYear"
+                required
+              />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="expensePerFundPerYear"
+                >Fund Management Expenses:</label
+              >
+              <input
+                type="text"
+                id="expensePerFundPerYear"
+                name="expensePerFundPerYear"
+                required
+              />
+            </div>
+          </div>
+          <div class="input-wrapper" id="decrements-assump">
+            <div class="input-title">Decrements Assumptions</div>
+            <div class="input-child-wrapper">
+              <label for="tabMortalityRates">Mortality Table:</label>
+              <input
+                type="text"
+                id="tabMortalityRates"
+                name="tabMortalityRates"
+                required
+              />
+            </div>
+            <div class="input-child-wrapper">
+              <label for="tabLapseRate">Lapse Table:</label>
+              <input
+                type="text"
+                id="tabLapseRate"
+                name="tabLapseRate"
+                required
+              />
+            </div>
+          </div>
+          <div class="input-wrapper" id="economic-assump">
+            <div class="input-title">Economic Assumptions</div>
+            <div class="input-child-wrapper">
+              <label for="tabRiskFreeRates">Risk Free Rates Table:</label>
+              <input
+                type="text"
+                id="tabRiskFreeRates"
+                name="tabRiskFreeRates"
+                required
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="user-input">
-        <label for="filePath">Excel File Path:</label>
-        <input
-          type="text"
-          id="filePath"
-          name="filePath"
-          required
-          placeholder="C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app"
-        /><br /><br />
-        <div class="input-title">Person Covered's Profile</div>
-        <label for="age">Age:</label>
-        <input type="text" id="age" name="age" required /><br /><br />
-        <label for="gender">Gender:</label>
-        <input type="text" id="gender" name="gender" required /><br /><br />
-        <div class="input-title">Contract Features</div>
-        <label for="polYear">Coverage Period:</label>
-        <input type="text" id="polYear" name="polYear" required /><br /><br />
-        <label for="sumAssured">Sum Assured:</label>
-        <input
-          type="text"
-          id="sumAssured"
-          name="sumAssured"
-          required
-        /><br /><br />
-        <label for="contributionPerYear">Contribution:</label>
-        <input
-          type="text"
-          id="contributionPerYear"
-          name="contributionPerYear"
-          required
-        /><br /><br />
-        <p>Surplus Sharing Ratio</p>
-        <label for="surplusShareToParticipant">Participant's Portion:</label>
-        <input
-          type="text"
-          id="surplusShareToParticipant"
-          name="surplusShareToParticipant"
-          required
-        /><br /><br />
-        <label for="surplusShareToShf">Operator's Portion:</label>
-        <input
-          type="text"
-          id="surplusShareToShf"
-          name="surplusShareToShf"
-          required
-        /><br /><br />
-        <div class="input-title">Contract Fees & Charges</div>
-        <label for="tabWakalahFee">Wakalah Fee Table:</label>
-        <input
-          type="text"
-          id="tabWakalahFee"
-          name="tabWakalahFee"
-          required
-        /><br /><br />
-        <label for="wakalahFmc">Fund Management Charge:</label>
-        <input
-          type="text"
-          id="wakalahFmc"
-          name="wakalahFmc"
-          required
-        /><br /><br />
-        <label for="coiLoading">Takaful Charge Loading:</label>
-        <input
-          type="text"
-          id="coiLoading"
-          name="coiLoading"
-          required
-        /><br /><br />
-        <div class="input-title">Expense Assumptions</div>
-        <label for="expensePerContributionPerYear"
-          >Per Contribution Expenses:</label
-        >
-        <input
-          type="text"
-          id="expensePerContributionPerYear"
-          name="expensePerContributionPerYear"
-          required
-        /><br /><br />
-        <label for="expensePerFundPerYear">Fund Management Expenses:</label>
-        <input
-          type="text"
-          id="expensePerFundPerYear"
-          name="expensePerFundPerYear"
-          required
-        /><br /><br />
-        <div class="input-title">Decrements Assumptions</div>
-        <label for="tabMortalityRates">Mortality Table:</label>
-        <input
-          type="text"
-          id="tabMortalityRates"
-          name="tabMortalityRates"
-          required
-        /><br /><br />
-        <label for="tabLapseRate">Lapse Table:</label>
-        <input
-          type="text"
-          id="tabLapseRate"
-          name="tabLapseRate"
-          required
-        /><br /><br />
-        <div class="input-title">Economic Assumptions</div>
-        <label for="tabRiskFreeRates">Risk Free Rates Table:</label>
-        <input
-          type="text"
-          id="tabRiskFreeRates"
-          name="tabRiskFreeRates"
-          required
-        /><br /><br />
+      <div class="app-image">
+        <img
+          src="./assets/main-img.webp"
+          alt="A desktop displaying various financial metrics"
+        />
       </div>
     </div>
-    <div class="app-logo"></div>
-    <!-- <script src="index.js"></script> -->
+    <script src="index.js"></script>
   </body>
 </html>
