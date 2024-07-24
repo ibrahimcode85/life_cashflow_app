@@ -1,0 +1,18 @@
+{
+  "filePath": "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\pricing_model.xlsx",
+  "age": "Age",
+  "gender": "Gender",
+  "polYear": "Pol_Year",
+  "sumAssured": "SumAssured",
+  "contributionPerYear": "Contribution_perYear",
+  "surplusShareToParticipant": "SurplusShare_toParticipant",
+  "surplusShareToShf": "SurplusShare_toSHF",
+  "tabWakalahFee": "Tab_WakalahFee",
+  "wakalahFmc": "Wakalah_Thrarawat",
+  "coiLoading": "COI_Loading",
+  "expensePerContributionPerYear": "Expense_perContribution_perYear",
+  "expensePerFundPerYear": "Expense_perFund_perYear",
+  "tabMortalityRates": "Tab_MortalityRates",
+  "tabLapseRate": "Tab_LapseRate",
+  "tabRiskFreeRates": "Tab_RiskFreeRates"
+}

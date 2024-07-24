@@ -6,10 +6,15 @@ import pandas as pd
 if __name__ == "__main__":
 
     # Set file path
-    file_path = "./pricing_model.xlsx"
+    json_file_path = (
+        r"C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app\user_input.json"
+    )
+
+    # Get user input from json file
+    user_input = read.read_json_file(json_file_path)
 
     # Read data dictionary
-    pricing_model_data = read.read_pricing_model_data(file_path)
+    pricing_model_data = read.read_pricing_model_data(user_input)
 
     # -----------------------------------------------------
     # Get the parameters and tables from the dictionary
@@ -22,18 +27,24 @@ if __name__ == "__main__":
     POL_YEAR = pricing_model_data["Pol_Year"]
     SUM_ASSD = pricing_model_data["SumAssured"]
     CONT_Y = pricing_model_data["Contribution_perYear"]
-    WAKALAH_TABLE = pricing_model_data["Table_WakalahFee"]
-    WAKALAH_FMC = pricing_model_data["Wakalah_FMC"]
-    COI_LOADING = pricing_model_data["COI_Loading"]
-    EXP_CONT_Y = pricing_model_data["Expense_perContribution_perYear"]
-    EXP_FUND_Y = pricing_model_data["Expense_perFund_perYear"]
     SURPLUS_SHARE_SHF = pricing_model_data["SurplusShare_toSHF"]
     SURPLUS_SHARE_PH = pricing_model_data["SurplusShare_toParticipant"]
 
-    # Tables
-    RFR_TABLE = pricing_model_data["Table_RiskFreeRate"]
+    # Contract Fees & Charges
+    WAKALAH_TABLE = pricing_model_data["Table_WakalahFee"]
+    WAKALAH_FMC = pricing_model_data["Wakalah_FMC"]
+    COI_LOADING = pricing_model_data["COI_Loading"]
+
+    # Expense Assumptions
+    EXP_CONT_Y = pricing_model_data["Expense_perContribution_perYear"]
+    EXP_FUND_Y = pricing_model_data["Expense_perFund_perYear"]
+
+    # Decrements Assumptions
     MORT_TABLE = pricing_model_data["Table_Mortality"]
     LAPSE_TABLE = pricing_model_data["Table_Lapse"]
+
+    # Decrements Assumptions
+    RFR_TABLE = pricing_model_data["Table_RiskFreeRate"]
 
     # ----end of procedure----------------------------------------------
 

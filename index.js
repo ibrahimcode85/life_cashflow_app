@@ -9,13 +9,13 @@ function getUserInput() {
   return data;
 }
 
-// function testFillInput() {
-//   // use this function to temporarily fill the input for testing purposes
-//   const inputsElement = document.querySelectorAll("input");
-//   inputsElement.forEach((input) => {
-//     input.value = input.id;
-//   });
-// }
+function testFillInput() {
+  // use this function to temporarily fill the input for testing purposes
+  const inputsElement = document.querySelectorAll("input");
+  inputsElement.forEach((input) => {
+    input.value = input.id;
+  });
+}
 
 // function uploadToStorage(userData) {
 //   localStorage.clear();
@@ -34,4 +34,4 @@ function getUserInput() {
 //   });
 
 // // Uncomment the line below for testing purposes
-// testFillInput();
+testFillInput();
