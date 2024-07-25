@@ -2,6 +2,7 @@ import projection as prj
 import data_read as read
 import pandas as pd
 import sys
+import os
 
 
 if __name__ == "__main__":
@@ -154,5 +155,8 @@ if __name__ == "__main__":
         pv_results.to_excel(writer, sheet_name="PV_Results", index=False)
 
     print("Excel file has been created successfully.")
+
+    # Delete the JSON file after processing
+    os.remove(json_file_path)
 
     # ----end of procedure----------------------------------------------

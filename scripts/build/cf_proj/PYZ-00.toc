@@ -1,4 +1,4 @@
-('C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\build\\cf_proj\\PYZ-00.pyz',
+('C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\scripts\\build\\cf_proj\\PYZ-00.pyz',
  [('IPython',
    'c:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\.venv\\Lib\\site-packages\\IPython\\__init__.py',
    'PYMODULE'),

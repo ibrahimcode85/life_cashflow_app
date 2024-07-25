@@ -2,12 +2,12 @@
 
 
 a = Analysis(
-    ['scripts\\main.py'],
+    ['main.py'],
     pathex=[],
     binaries=[],
     datas=[
-        ('data_read.py', '.'),
-        ('projection.py', '.')
+        ('data_read.py', '.'),  
+        ('projection.py', '.'),
     ],
     hiddenimports=[],
     hookspath=[],

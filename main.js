@@ -27,7 +27,7 @@ ipcMain.handle("run-python-script", async (event, jsonFilePath) => {
     __dirname,
     "scripts",
     "dist",
-    "main.exe"
+    "cf_proj.exe"
   );
 
   try {
