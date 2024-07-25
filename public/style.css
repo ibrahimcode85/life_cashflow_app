@@ -42,7 +42,7 @@ body {
   padding: 15px;
 }
 
-.submit-button {
+.run-button {
   background-color: #007bff; /* Blue background color */
   color: white; /* White text color */
   border: none; /* No border */
@@ -59,12 +59,12 @@ body {
 }
 
 /* Hover effect for the button */
-.submit-button:hover {
+.run-button:hover {
   background-color: #0056b3; /* Darker blue on hover */
 }
 
 /* Focus effect for accessibility */
-.submit-button:focus {
+.run-button:focus {
   outline: none; /* Remove default outline */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add blue shadow */
 }

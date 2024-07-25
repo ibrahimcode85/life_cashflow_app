@@ -27,7 +27,7 @@ ipcMain.handle("run-python-script", async (event, jsonFilePath) => {
     __dirname,
     "scripts",
     "dist",
-    "generate_excel.exe"
+    "main.exe"
   );
 
   try {
@@ -45,11 +45,13 @@ ipcMain.handle("run-python-script", async (event, jsonFilePath) => {
   }
 });
 
+// Function to write JSON file (using fs module)
 ipcMain.handle("write-json-file", (event, filePath, data) => {
   fs.writeFileSync(filePath, data);
   return { success: true };
 });
 
+// Function to get directory name
 ipcMain.handle("get-dirname", () => {
   return __dirname;
 });

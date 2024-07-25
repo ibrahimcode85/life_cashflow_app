@@ -1,14 +1,17 @@
 import projection as prj
 import data_read as read
 import pandas as pd
+import sys
 
 
 if __name__ == "__main__":
 
-    # Set file path
-    json_file_path = (
-        r"C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app\user_input.json"
-    )
+    # Check if json path is passed as an argument and set the path if exists
+    if len(sys.argv) > 1:
+        json_file_path = sys.argv[1]
+    else:
+        print("Path to JSON file not provided.")
+        sys.exit(1)
 
     # Get user input from json file
     user_input = read.read_json_file(json_file_path)

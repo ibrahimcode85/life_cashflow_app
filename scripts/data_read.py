@@ -7,16 +7,6 @@ import os
 
 def read_json_file(json_file_path):
 
-    # Check if json path is passed as an argument
-    # if len(sys.argv) > 1:
-    #     json_file_path = sys.argv[1]
-    # else:
-    #     print("Path to JSON file not provided.")
-    #     sys.exit(1)
-
-    # # Print the path for checking
-    # print(f"Trying to locate file in: {json_file_path}")
-
     # Check if the JSON file exists
     if os.path.exists(json_file_path):
         print(f"JSON file exists in: {json_file_path}")
