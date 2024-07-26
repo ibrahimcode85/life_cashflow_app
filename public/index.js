@@ -70,3 +70,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 // Fill the input field for testing. Commented if not in use.
 testFillInput();
+
+document.addEventListener("DOMContentLoaded", function () {
+  const navItems = document.querySelectorAll(".nav-item-wrapper");
+  const navIcon = document.querySelectorAll(".nav-item-wrapper img");
+  const sections = document.querySelectorAll(".section");
+
+  navItems.forEach((item) => {
+    item.addEventListener("click", function (event) {
+      event.preventDefault();
+      const targetId = event.target.id.replace("-icon", "");
+      showSection(targetId);
+    });
+  });
+
+  function showSection(targetId) {
+    // Remove active class from all nav items
+    navItems.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    // Remove select-style from all nav icon
+    navIcon.forEach((item) => {
+      item.style.borderBottom = "";
+    });
+
+    // Hide all sections and remove flex class
+    sections.forEach((section) => {
+      section.classList.remove("active");
+      section.style.display = "none";
+    });
+
+    // Add active class to the clicked nav item
+    document.getElementById(targetId).classList.add("active");
+
+    // Add style to active nav icon
+    document.querySelector(".nav-item-wrapper.active img").style.borderBottom =
+      "5px solid #ffffff";
+
+    // Show the target section and add flex class
+    document
+      .querySelector(".section#" + targetId + "-wrapper")
+      .classList.add("active");
+    document.querySelector(".section#" + targetId + "-wrapper").style.display =
+      "unset";
+  }
+
+  // Initial display setup - show the home section
+  showSection("home");
+});

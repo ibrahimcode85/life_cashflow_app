@@ -1,9 +1,9 @@
 :root {
   /* color scheme */
-  --main-bg-color: #f3f3f3;
+  --main-bg-color: rgba(243, 243, 243, 0.9);
   --header-bg-color: #ffffff;
   --section-bg-color: #ffffff;
-  --theme-color: #52c08d;
+  --theme-color: #268157;
   --text-primary-color: #333;
   --text-secondary-color: #666;
 
@@ -16,21 +16,65 @@ body {
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
-  margin: 15px 0px;
+  margin: 0px 0px;
   padding: 0;
+  height: 100vh;
   background-color: var(--main-bg-color);
   color: var(--text-secondary-color);
+  background: url("./assets/main-img-wide.webp") no-repeat center center fixed;
+  background-size: cover;
 }
 
-.app-main-title {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--theme-color);
+.navbar {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  background-color: #268157;
+  padding: 20px 20px;
+  margin-top: 15px;
+  border-radius: 30px;
+}
+
+.navbar img:hover {
+  border-bottom: 5px solid #ffffff;
+}
+.navbar img {
+  width: 40px;
+  padding: 5px;
+  border-bottom: 5px solid #ffffff00;
+}
+
+.nav-item-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-item-wrapper .tooltip-text {
+  font-size: 0.8rem;
+  visibility: hidden;
+  width: 120px;
+  background-color: #023014;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  bottom: -25px;
+  right: -30px;
+  z-index: 1;
+}
+
+.nav-item-wrapper:hover .tooltip-text {
+  visibility: visible;
 }
 
 .app-content-wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   width: 100%;
 }
 
@@ -71,18 +115,17 @@ body {
 
 /* end of Button Item --------------------- */
 
-.user-input-wrapper,
-.app-image {
-  width: 45%;
-  margin: 15px;
-  padding: 15px;
+.section#home-wrapper,
+.section#input-settings-wrapper,
+.section#output-settings-wrapper,
+.section#run-script-wrapper {
+  /* display: none; */
+  background-color: var(--main-bg-color);
   border: var(--main-border-style);
   box-shadow: var(--main-shadow-style);
-  background-color: var(--section-bg-color);
-}
-
-.app-image {
-  padding: 0px;
+  width: 70%;
+  margin: 15px;
+  padding: 15px;
 }
 
 .input-wrapper {
@@ -115,7 +158,7 @@ body {
 }
 
 input {
-  width: 50%;
+  width: 30%;
 }
 
 .input-wrapper#file-path input {
@@ -126,10 +169,4 @@ input {
 label {
   display: inline-block;
   width: 215px;
-}
-
-.app-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: fill; /* Cover the entire div */
 }
