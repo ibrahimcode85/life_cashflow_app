@@ -40,7 +40,7 @@ function testFillInput() {
 // Add event listener to run python script
 // Approach: Get user input in html -> create json file -> python read json file
 document.addEventListener("DOMContentLoaded", async () => {
-  const runButton = document.querySelector(".run-button");
+  const runButton = document.querySelector("#run-script-icon");
   const dirname = await window.electronAPI.getDirname();
 
   runButton.addEventListener("click", async () => {
