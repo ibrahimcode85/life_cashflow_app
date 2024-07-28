@@ -11,7 +11,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         json_file_path = sys.argv[1]
     else:
-        print("Path to JSON file not provided.")
+        read.log_message("Path to temporary JSON file not provided.")
         sys.exit(1)
 
     # Get user input from json file
@@ -154,9 +154,12 @@ if __name__ == "__main__":
         pv_results = pd.concat([unit_cf_PV, risk_cf_PV, shf_cf_PV])
         pv_results.to_excel(writer, sheet_name="PV_Results", index=False)
 
-    print("Excel file has been created successfully.")
+    read.log_message(f"Output file has been created successfully in : {output_file}")
 
     # Delete the JSON file after processing
     os.remove(json_file_path)
+    read.log_message(
+        f"Temporary JSON file deleted after succesful creation of Output file."
+    )
 
     # ----end of procedure----------------------------------------------

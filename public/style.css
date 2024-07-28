@@ -113,7 +113,7 @@ body {
   color: var(--theme-color);
 }
 
-/* -------------- USER INPUT SECTION  ----------------------*/
+/* -------------- INPUT SETTINGS SECTION  ----------------------*/
 #input-settings-wrapper .main-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -167,7 +167,7 @@ body {
   width: 215px;
 }
 
-/* -------------- USER INPUT SECTION  ----------------------*/
+/* --------------OUTPUT SETTINGS SECTION  ----------------------*/
 #output-settings-wrapper .main-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -187,8 +187,8 @@ body {
 }
 
 #output-settings-wrapper input#generateRunLog {
-  width: unset;
-  padding: 15px;
+  width: 18px;
+  height: 18px;
 }
 
 #output-settings-wrapper select {
@@ -200,4 +200,35 @@ body {
 #output-settings-wrapper label {
   display: inline-block;
   width: 215px;
+}
+
+/* -------------- RUN SECTION  ----------------------*/
+
+#run-script-wrapper {
+  height: 100vh;
+}
+
+#run-script-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+#run-script-wrapper .log-wrapper {
+  width: 100%;
+  height: 90%;
+  border: 2px solid lightgray;
+  margin: 15px 0px;
+}
+
+#run-script-wrapper .py-log {
+  font-size: 1rem;
+  padding: 5px;
+  border: 1px solid #ddd;
+  font-family: monospace;
+  white-space: pre-wrap; /* to preserve newlines and formatting */
+}
+
+#run-script-wrapper .py-log:last-child {
+  font-weight: bold;
 }

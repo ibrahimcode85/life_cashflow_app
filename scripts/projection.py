@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from data_read import *
+import data_read as read
 
 
 def append_dataframes(df_list):
@@ -552,9 +552,11 @@ def generate_cashflow_if_df(cashflow_df, policy_count_df, is_unit_fund=False):
         unit_if_check = round(cashflow_if_df["Unit_Fund_EOP_IF"] - unit_after_claim, 4)
 
         if unit_if_check.sum() == 0:
-            print(f"Checking passed for: Net If Cashflow = Unit_PP * No_Pols_IF ")
+            read.log_message(
+                f"Checking passed for: Net If Cashflow = Unit_PP * No_Pols_IF "
+            )
         else:
-            print(
+            read.log_message(
                 f"WARNING! Checking failed for: Net If Cashflow = Unit_PP * No_Pols_IF "
             )
 

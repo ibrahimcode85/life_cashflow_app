@@ -3,20 +3,36 @@ from openpyxl import load_workbook
 import json
 import sys
 import os
+import datetime
+
+
+def log_message(message):
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{current_time}] {message}")
+
+
+def log_dict(dictionary):
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    formatted_dict = json.dumps(dictionary, indent=4)
+    print(f"[{current_time}] {formatted_dict}")
 
 
 def read_json_file(json_file_path):
 
     # Check if the JSON file exists
     if os.path.exists(json_file_path):
-        print(f"JSON file exists in: {json_file_path}")
+        log_message(f"Temporary JSON file exists in: {json_file_path}")
     else:
-        print(f"Couldn't find the JSON file in{json_file_path}")
+        log_message(f"Couldn't find the temporary JSON file in{json_file_path}")
         sys.exit(1)
 
     # Extract the value
     with open(json_file_path, "r") as f:
         user_input = json.load(f)
+
+    # Log the name defined for audit
+    log_message("The input specified by users in Input Settings:")
+    log_dict(user_input)
 
     return user_input
 
@@ -62,6 +78,7 @@ def read_pricing_model_data(user_input):
 
     # get file path
     file_path = input["filePath"]
+    log_message(f"Python script will be run based on this Excel model: {file_path}.")
 
     # Load the workbook
     wb = load_workbook(filename=file_path, data_only=True)
@@ -154,4 +171,5 @@ def read_pricing_model_data(user_input):
         "Expense_perFund_perYear": expense_per_fund_per_year_value,
         "COI_Loading": coi_loading_value,
     }
+
     return data

@@ -12,4 +12,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   // exposing node variable called in main.js
   getDirname: () => ipcRenderer.invoke("get-dirname"),
+
+  // Listenn for the python-log event from main to update to be passed back to renderer
+  onPythonLog: (callback) => {
+    ipcRenderer.on("python-log", callback);
+  },
 });

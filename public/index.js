@@ -37,12 +37,27 @@ function testFillInput() {
   });
 }
 
-// Add event listener to run python script
-// Approach: Get user input in html -> create json file -> python read json file
 document.addEventListener("DOMContentLoaded", async () => {
   const runButton = document.querySelector("#run-script-icon");
   const dirname = await window.electronAPI.getDirname();
 
+  // Display python log messages received from main-process via 'python-log' channel.
+  window.electronAPI.onPythonLog((event, log) => {
+    const logWrapper = document.querySelector(".log-wrapper");
+    const logLines = log.split("\r\n");
+    logLines.forEach((line) => {
+      if (line.trim() !== "") {
+        // Ignore empty lines
+        const logDiv = document.createElement("div");
+        logDiv.classList.add("py-log");
+        logDiv.textContent = line;
+        logWrapper.appendChild(logDiv);
+      }
+    });
+  });
+
+  // Add event listener to run python script
+  // Approach: Get user input in html -> create json file -> python read json file
   runButton.addEventListener("click", async () => {
     // Get user input
     const user_input = getUserInput();
@@ -56,14 +71,24 @@ document.addEventListener("DOMContentLoaded", async () => {
       JSON.stringify(user_input, null, 2)
     );
 
+    // Initialise log section for logging
+    const logWrapper = document.querySelector(".log-wrapper");
+    // logWrapper.textContent = "";
+
     // Run python script
     try {
       const result = await window.electronAPI.runPythonScript(jsonFilePath);
-      console.log(result);
+      if (result.success) {
+        // add py-log child
+        const logDiv = document.createElement("div");
+        logDiv.classList.add("py-log");
+        logDiv.textContent = "Script completed successfully!";
+        logWrapper.appendChild(logDiv);
+      } else {
+        logWrapper.textContent += `Error: ${result.error}\n`;
+      }
     } catch (error) {
-      console.error("Error running Python script:", error);
-      document.getElementById("output").textContent =
-        "Error occurred. Check console for details.";
+      logWrapper.textContent += `Error running Python script: ${error}\n`;
     }
   });
 });
