@@ -31,7 +31,7 @@ def read_json_file(json_file_path):
         user_input = json.load(f)
 
     # Log the name defined for audit
-    log_message("The input specified by users in Input Settings:")
+    log_message("The input specified by users in Input and Output Settings:")
     log_dict(user_input)
 
     return user_input

@@ -50,6 +50,13 @@ body {
   display: inline-block;
 }
 
+.nav-item-wrapper#run-separator {
+  height: 90%;
+  width: 5px;
+  background-color: #0b4925;
+  color: #0b4925;
+}
+
 .nav-item-wrapper .tooltip-text {
   font-size: 0.8rem;
   visibility: hidden;
@@ -205,7 +212,7 @@ body {
 /* -------------- RUN SECTION  ----------------------*/
 
 #run-script-wrapper {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 #run-script-wrapper .main-title {

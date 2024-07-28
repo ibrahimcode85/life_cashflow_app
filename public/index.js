@@ -1,8 +1,17 @@
 function getUserInput() {
   const inputsElement = document.querySelectorAll("input");
+  const selectsElement = document.querySelectorAll("select");
   const data = {};
 
   inputsElement.forEach((input) => {
+    data[input.id] = input.value;
+
+    if (input.type === "checkbox") {
+      data[input.id] = input.checked;
+    }
+  });
+
+  selectsElement.forEach((input) => {
     data[input.id] = input.value;
   });
 
@@ -30,6 +39,9 @@ function testFillInput() {
     tabMortalityRates: "Tab_MortalityRates",
     tabLapseRate: "Tab_LapseRate",
     tabRiskFreeRates: "Tab_RiskFreeRates",
+    outputFilePath:
+      "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app",
+    outputFileName: "pricing_model_py_output",
   };
 
   inputsElement.forEach((input) => {
@@ -73,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Initialise log section for logging
     const logWrapper = document.querySelector(".log-wrapper");
-    // logWrapper.textContent = "";
+    logWrapper.textContent = "Running Python ...";
 
     // Run python script
     try {
