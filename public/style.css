@@ -25,11 +25,12 @@ body {
   background-size: cover;
 }
 
+/* -------------- NAVIGATION BAR HEADER  ----------------------*/
 .navbar {
   display: flex;
   gap: 50px;
   align-items: center;
-  background-color: #268157;
+  background-color: var(--theme-color);
   padding: 20px 20px;
   margin-top: 15px;
   border-radius: 30px;
@@ -59,7 +60,6 @@ body {
   padding: 5px 0;
   border-radius: 6px;
 
-  /* Position the tooltip text - see examples below! */
   position: absolute;
   bottom: -25px;
   right: -30px;
@@ -78,54 +78,47 @@ body {
   width: 100%;
 }
 
-/* Button Item --------------------- */
-.user-action {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 15px;
-}
-
-.run-button {
-  background-color: #007bff; /* Blue background color */
-  color: white; /* White text color */
-  border: none; /* No border */
-  padding: 10px 20px; /* Padding */
-  text-align: center; /* Center text */
-  text-decoration: none; /* No underline */
-  display: inline-block; /* Inline-block display */
-  font-size: 1.2rem; /* Font size */
-  font-weight: bold;
-  /* margin: 10px 2px; Margin */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
-}
-
-/* Hover effect for the button */
-.run-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Focus effect for accessibility */
-.run-button:focus {
-  outline: none; /* Remove default outline */
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add blue shadow */
-}
-
-/* end of Button Item --------------------- */
-
+/* -------------- COMMON APP's SECTION  ----------------------*/
 .section#home-wrapper,
 .section#input-settings-wrapper,
 .section#output-settings-wrapper,
 .section#run-script-wrapper {
-  /* display: none; */
   background-color: var(--main-bg-color);
   border: var(--main-border-style);
   box-shadow: var(--main-shadow-style);
   width: 70%;
   margin: 15px;
   padding: 15px;
+}
+
+/* -------------- HOME SECTION  ----------------------*/
+#home-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+#home-wrapper .second-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 15px 0px;
+}
+
+#home-wrapper li {
+  margin: 10px 0px;
+}
+
+#home-wrapper span {
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+/* -------------- USER INPUT SECTION  ----------------------*/
+#input-settings-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+  /* margin: 15px; */
 }
 
 .input-wrapper {
@@ -157,7 +150,10 @@ body {
   color: var(--theme-color);
 }
 
-input {
+#input-settings-wrapper input {
+  font-size: 1rem;
+  color: var(--text-secondary-color);
+  padding: 2.5px;
   width: 30%;
 }
 
@@ -166,7 +162,42 @@ input {
   margin-left: 5px;
 }
 
-label {
+#input-settings-wrapper label {
+  display: inline-block;
+  width: 215px;
+}
+
+/* -------------- USER INPUT SECTION  ----------------------*/
+#output-settings-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+  /* margin: 15px; */
+}
+
+.output-wrapper {
+  margin: 15px;
+}
+
+#output-settings-wrapper input {
+  font-size: 1rem;
+  padding: 2.5px;
+  color: var(--text-secondary-color);
+  width: 30%;
+}
+
+#output-settings-wrapper input#generateRunLog {
+  width: unset;
+  padding: 15px;
+}
+
+#output-settings-wrapper select {
+  font-size: 1rem;
+  padding: 2.5px;
+  color: var(--text-secondary-color);
+}
+
+#output-settings-wrapper label {
   display: inline-block;
   width: 215px;
 }

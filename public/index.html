@@ -36,8 +36,47 @@
       </div>
     </nav>
     <div class="app-content-wrapper">
-      <div class="section" id="home-wrapper">WELCOME!</div>
+      <div class="section" id="home-wrapper">
+        <div class="main-title">LIFE ACTUARIAL CASHFLOW MODEL</div>
+        <div class="second-title">WELCOME!</div>
+        <div class="home-text">
+          <p>
+            This application, powered by Python, is designed to assist life
+            actuaries in projecting their insurance cashflows.
+          </p>
+          <p>
+            It seamlessly integrates with your existing pricing Excel models.
+            Users simply need to 'link' this application to their pricing model
+            by specifying the directory path of the Excel file and the names of
+            the tables and input parameters defined in the Excel file—then
+            you're all set.
+          </p>
+          <p>
+            With this 'link' design, users no longer need to prepare separate
+            input files to run the Python-based model.
+          </p>
+          <div class="second-title">Quick Start</div>
+          <ul>
+            <li>
+              Navigate to <span>Input Settings</span> and specify the directory
+              path to the Excel file, along with the names of the tables and
+              input parameters defined in the Excel file.
+            </li>
+            <li>
+              Navigate to <span>Output Setting</span> to specify the format and
+              type of output to be generated.
+            </li>
+            <li>
+              Click the <span>Run Button</span>. The run log can be viewed
+              directly within this application or can be generated as one of the
+              output files for audit purposes.
+            </li>
+          </ul>
+        </div>
+      </div>
       <div class="section" id="input-settings-wrapper">
+        <div class="main-title">Input Settings</div>
+
         <div class="user-input">
           <div class="input-wrapper" id="file-path">
             <label for="filePath">Excel File Path</label>
@@ -184,7 +223,39 @@
           </div>
         </div>
       </div>
-      <div class="section" id="output-settings-wrapper">Output Settings!</div>
+      <div class="section" id="output-settings-wrapper">
+        <div class="main-title">Output Settings</div>
+        <div class="output-wrapper">
+          <label for="outputFilePath">Output Path</label>
+          <input
+            type="text"
+            id="outputFilePath"
+            name="outputFilePath"
+            required
+          />
+        </div>
+        <div class="output-wrapper">
+          <label for="outputFileName">Output File Name</label>
+          <input
+            type="text"
+            id="outputFileName"
+            name="outputFileName"
+            required
+          />
+        </div>
+        <div class="output-wrapper">
+          <label for="outputFormat">Output Cashflow File Format</label>
+          <select id="outputFormat" name="outputFormat" required>
+            <option value="xlsx">.xlsx</option>
+            <option value="csv">.csv</option>
+            <option value="pickle">pickle</option>
+          </select>
+        </div>
+        <div class="output-wrapper">
+          <label for="generateRunLo"> Generate Run Log </label>
+          <input type="checkbox" id="generateRunLog" name="generateRunLog" />
+        </div>
+      </div>
       <div class="section" id="run-script-wrapper">Python Run Log!</div>
     </div>
     <script src="index.js"></script>
