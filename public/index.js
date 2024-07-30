@@ -23,7 +23,7 @@ function testFillInput() {
   const inputsElement = document.querySelectorAll("input");
   const testInput = {
     filePath:
-      "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\resources\\pricing_model.xlsx",
+      "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cf_app\\resources\\pricing_model.xlsx",
     age: "Age",
     gender: "Gender",
     polYear: "Pol_Year",
