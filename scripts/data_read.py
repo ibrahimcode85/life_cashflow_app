@@ -6,24 +6,36 @@ import os
 import datetime
 
 
-def log_message(message):
+def log_message(message, log_list):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[{current_time}] {message}")
+    log_entry = f"[{current_time}] {message}"
+    print(log_entry)
+    log_list.append(log_entry)
+
+    return log_list
 
 
-def log_dict(dictionary):
+def log_dict(dictionary, log_list):
     current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     formatted_dict = json.dumps(dictionary, indent=4)
-    print(f"[{current_time}] {formatted_dict}")
+    log_entry = f"[{current_time}] {formatted_dict}"
+    print(log_entry)
+    log_list.append(log_entry)
+
+    return log_list
 
 
-def read_json_file(json_file_path):
+def read_json_file(json_file_path, log_list):
 
     # Check if the JSON file exists
     if os.path.exists(json_file_path):
-        log_message(f"Temporary JSON file exists in: {json_file_path}")
+        log_list = log_message(
+            f"Temporary JSON file exists in: {json_file_path}", log_list
+        )
     else:
-        log_message(f"Couldn't find the temporary JSON file in{json_file_path}")
+        log_list = log_message(
+            f"Couldn't find the temporary JSON file in{json_file_path}", log_list
+        )
         sys.exit(1)
 
     # Extract the value
@@ -31,10 +43,12 @@ def read_json_file(json_file_path):
         user_input = json.load(f)
 
     # Log the name defined for audit
-    log_message("The input specified by users in Input and Output Settings:")
-    log_dict(user_input)
+    log_list = log_message(
+        "The input specified by users in Input and Output Settings:", log_list
+    )
+    log_list = log_dict(user_input, log_list)
 
-    return user_input
+    return user_input, log_list
 
 
 def get_named_range_value(wb, named_range):
@@ -71,21 +85,27 @@ def extract_table_from_reference(file_path, table_reference):
     return table_df
 
 
-def read_pricing_model_data(user_input):
+def read_pricing_model_data(user_input, log_list):
 
     # user_input is a dictionary which were read from json file.
     input = user_input
 
-    # get file path
-    file_path = input["filePath"]
-    log_message(f"Python script will be run based on this Excel model: {file_path}.")
+    # ------------------------------------------------------
+    # Extract file path and output format
+    # ------------------------------------------------------
 
-    # Load the workbook
-    wb = load_workbook(filename=file_path, data_only=True)
+    # get excel file path
+    file_path = input["filePath"]
+    log_list = log_message(
+        f"Python script will be run based on this Excel model: {file_path}.", log_list
+    )
 
     # ------------------------------------------------------
     # Extract specific named ranges
     # ------------------------------------------------------
+    # Load the workbook
+    wb = load_workbook(filename=file_path, data_only=True)
+
     #   Person Covered's Profile
     age = wb.defined_names[input["age"]].value
     gender = wb.defined_names[input["gender"]].value
@@ -171,5 +191,4 @@ def read_pricing_model_data(user_input):
         "Expense_perFund_perYear": expense_per_fund_per_year_value,
         "COI_Loading": coi_loading_value,
     }
-
-    return data
+    return data, log_list

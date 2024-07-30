@@ -504,7 +504,7 @@ INFORCE CASH FLOW PROJECTION:
 """
 
 
-def generate_cashflow_if_df(cashflow_df, policy_count_df, is_unit_fund=False):
+def generate_cashflow_if_df(cashflow_df, policy_count_df, log_list, is_unit_fund=False):
     # Initialize an empty dictionary to store the new columns
     cashflow_if_dict = {}
 
@@ -552,15 +552,17 @@ def generate_cashflow_if_df(cashflow_df, policy_count_df, is_unit_fund=False):
         unit_if_check = round(cashflow_if_df["Unit_Fund_EOP_IF"] - unit_after_claim, 4)
 
         if unit_if_check.sum() == 0:
-            read.log_message(
-                f"Checking passed for: Net If Cashflow = Unit_PP * No_Pols_IF "
+            log_list = read.log_message(
+                f"Checking passed for: Net IF Unit Cashflow = Unit_PP * No_Pols_IF ",
+                log_list,
             )
         else:
-            read.log_message(
-                f"WARNING! Checking failed for: Net If Cashflow = Unit_PP * No_Pols_IF "
+            log_list = read.log_message(
+                f"WARNING! Checking failed for: Net IF Unit Cashflow = Unit_PP * No_Pols_IF ",
+                log_list,
             )
 
-    return cashflow_if_df
+    return cashflow_if_df, log_list
 
 
 def generate_pv_cashflows_df(cashflow_df, disc_fac_df):

@@ -7,18 +7,23 @@ import os
 
 if __name__ == "__main__":
 
+    # Initalised log list
+    log_list = []
+
     # Check if json path is passed as an argument and set the path if exists
     if len(sys.argv) > 1:
         json_file_path = sys.argv[1]
     else:
-        read.log_message("Path to temporary JSON file not provided.")
+        log_list = read.log_message(
+            "Path to temporary JSON file not provided.", log_list
+        )
         sys.exit(1)
 
     # Get user input from json file
-    user_input = read.read_json_file(json_file_path)
+    user_input, log_list = read.read_json_file(json_file_path, log_list)
 
     # Read data dictionary
-    pricing_model_data = read.read_pricing_model_data(user_input)
+    pricing_model_data, log_list = read.read_pricing_model_data(user_input, log_list)
 
     # -----------------------------------------------------
     # Get the parameters and tables from the dictionary
@@ -99,11 +104,15 @@ if __name__ == "__main__":
     )
 
     # Project inforce cashflows
-    unit_cf_if_proj = prj.generate_cashflow_if_df(
-        unit_cf_pp_proj, pol_count_proj, is_unit_fund=True
+    unit_cf_if_proj, log_list = prj.generate_cashflow_if_df(
+        unit_cf_pp_proj, pol_count_proj, log_list, is_unit_fund=True
     )
-    risk_cf_if_proj = prj.generate_cashflow_if_df(risk_cf_pp_proj, pol_count_proj)
-    shf_cf_if_proj = prj.generate_cashflow_if_df(shf_cf_pp_proj, pol_count_proj)
+    risk_cf_if_proj, log_list = prj.generate_cashflow_if_df(
+        risk_cf_pp_proj, pol_count_proj, log_list
+    )
+    shf_cf_if_proj, log_list = prj.generate_cashflow_if_df(
+        shf_cf_pp_proj, pol_count_proj, log_list
+    )
 
     # ----end of procedure----------------------------------------------
 
@@ -119,7 +128,7 @@ if __name__ == "__main__":
     # ----end of procedure----------------------------------------------
 
     # -----------------------------------------------------
-    # Export results as excel file
+    # Export output file
     # -----------------------------------------------------
     cf_proj_list = [
         t_index_col,
@@ -143,23 +152,91 @@ if __name__ == "__main__":
     cf_proj_table = prj.append_dataframes(cf_proj_list)
 
     # Define Excel output name
-    output_file = "pricing_model_py_output.xlsx"
+    output_path = user_input["outputFilePath"]
+    output_name = user_input["outputFileName"]
+    output_format = user_input["outputFormat"]
+    output_file = output_path + "\\" + output_name + "." + output_format
 
-    # Write data to Excel
-    with pd.ExcelWriter(output_file) as writer:
-        # Write cashflow projection table to "cashflow_proj" sheet
-        cf_proj_table.to_excel(writer, sheet_name="Cashflow_Proj", index=False)
+    # Create output directory if it doesn't exist
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+        log_list = read.log_message(
+            f"Output directory provided does not exists, '{output_path}' created successfully.",
+            log_list,
+        )
 
-        # Write PV results to "pv_results" sheet
+    # Write output
+    if output_format == "xlsx":
+        # Write data to Excel
+        with pd.ExcelWriter(output_file) as writer:
+            # Write cashflow projection table to "cashflow_proj" sheet
+            cf_proj_table.to_excel(writer, sheet_name="Cashflow_Proj", index=False)
+
+            # Write PV results to "pv_results" sheet
+            pv_results = pd.concat([unit_cf_PV, risk_cf_PV, shf_cf_PV])
+            pv_results.to_excel(writer, sheet_name="PV_Results", index=False)
+
+        log_list = read.log_message(
+            f"Output file has been created successfully in: {output_file}", log_list
+        )
+
+    elif output_format == "csv":
+        # Write data to CSV
+        cf_proj_table.to_csv(output_file, index=False)
+        log_list = read.log_message(
+            f"Output file has been created successfully in: {output_file}",
+            log_list,
+        )
+
         pv_results = pd.concat([unit_cf_PV, risk_cf_PV, shf_cf_PV])
-        pv_results.to_excel(writer, sheet_name="PV_Results", index=False)
+        pv_results.to_csv(output_file.replace(".csv", "_pv_results.csv"), index=False)
 
-    read.log_message(f"Output file has been created successfully in : {output_file}")
+        log_list = read.log_message(
+            f"Output file has been created successfully in: {output_file.replace('.csv', '_pv_results.csv')}",
+            log_list,
+        )
+
+    elif output_format == "pickle":
+        # Write data to Pickle
+        cf_proj_table.to_pickle(output_file.replace(".pickle", ".pkl"))
+        log_list = read.log_message(
+            f"Output file has been created successfully in: {output_file.replace(".pickle", ".pkl")}",
+            log_list,
+        )
+
+        pv_results = pd.concat([unit_cf_PV, risk_cf_PV, shf_cf_PV])
+        pv_results.to_pickle(output_file.replace(".pickle", "_pv_results.pkl"))
+        log_list = read.log_message(
+            f"Output file has been created successfully in: {output_file.replace('.pickle', '_pv_results.pkl')}",
+            log_list,
+        )
+
+    else:
+        log_list = read.log_message(
+            f"Unsupported output format: {output_format}", log_list
+        )
 
     # Delete the JSON file after processing
     os.remove(json_file_path)
-    read.log_message(
-        f"Temporary JSON file deleted after succesful creation of Output file."
+    log_list = read.log_message(
+        f"Temporary JSON file deleted after succesful creation of Output file.",
+        log_list,
     )
+
+    # Write log output file
+    generate_log_bool = user_input["generateRunLog"]
+
+    if generate_log_bool == True:
+        log_file = output_path + "\\" + "log_output.txt"
+        with open(log_file, "w") as file:
+            for log_entry in log_list:
+                file.write(log_entry + "\n")
+
+            # write last entry
+            log_list = read.log_message(
+                f"Log file has been created successfully in: {log_file}", log_list
+            )
+            log_entry_last = log_list[-1]
+            file.write(log_entry_last)
 
     # ----end of procedure----------------------------------------------
