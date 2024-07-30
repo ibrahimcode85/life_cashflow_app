@@ -1,0 +1,241 @@
+:root {
+  /* color scheme */
+  --main-bg-color: rgba(243, 243, 243, 0.9);
+  --header-bg-color: #ffffff;
+  --section-bg-color: #ffffff;
+  --theme-color: #268157;
+  --text-primary-color: #333;
+  --text-secondary-color: #666;
+
+  --main-border-style: 1px solid #f3f3f3;
+  --main-shadow-style: 8px 3px 10px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin: 0px 0px;
+  padding: 0;
+  height: 100vh;
+  background-color: var(--main-bg-color);
+  color: var(--text-secondary-color);
+  background: url("./assets/main-img-wide.webp") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* -------------- NAVIGATION BAR HEADER  ----------------------*/
+.navbar {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  background-color: var(--theme-color);
+  padding: 20px 20px;
+  margin-top: 15px;
+  border-radius: 30px;
+}
+
+.navbar img:hover {
+  border-bottom: 5px solid #ffffff;
+}
+.navbar img {
+  width: 40px;
+  padding: 5px;
+  border-bottom: 5px solid #ffffff00;
+}
+
+.nav-item-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-item-wrapper#run-separator {
+  height: 90%;
+  width: 5px;
+  background-color: #0b4925;
+  color: #0b4925;
+}
+
+.nav-item-wrapper .tooltip-text {
+  font-size: 0.8rem;
+  visibility: hidden;
+  width: 120px;
+  background-color: #023014;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  position: absolute;
+  bottom: -25px;
+  right: -30px;
+  z-index: 1;
+}
+
+.nav-item-wrapper:hover .tooltip-text {
+  visibility: visible;
+}
+
+.app-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* -------------- COMMON APP's SECTION  ----------------------*/
+.section#home-wrapper,
+.section#input-settings-wrapper,
+.section#output-settings-wrapper,
+.section#run-script-wrapper {
+  background-color: var(--main-bg-color);
+  border: var(--main-border-style);
+  box-shadow: var(--main-shadow-style);
+  width: 70%;
+  margin: 15px;
+  padding: 15px;
+}
+
+/* -------------- HOME SECTION  ----------------------*/
+#home-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+#home-wrapper .second-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 15px 0px;
+}
+
+#home-wrapper li {
+  margin: 10px 0px;
+}
+
+#home-wrapper span {
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+/* -------------- INPUT SETTINGS SECTION  ----------------------*/
+#input-settings-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+  /* margin: 15px; */
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.input-wrapper#file-path {
+  display: flex;
+  flex-direction: unset;
+  font: 1.2rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+.input-wrapper .input-child-wrapper {
+  margin: 5px;
+}
+
+.input-child-wrapper#surplus-sharing {
+  margin-top: 15px;
+}
+
+.input-title {
+  font: 1.2rem;
+  font-weight: bold;
+  margin: 5px 0px;
+  color: var(--theme-color);
+}
+
+#input-settings-wrapper input {
+  font-size: 1rem;
+  color: var(--text-secondary-color);
+  padding: 2.5px;
+  width: 30%;
+}
+
+.input-wrapper#file-path input {
+  width: 60%;
+  margin-left: 5px;
+}
+
+#input-settings-wrapper label {
+  display: inline-block;
+  width: 215px;
+}
+
+/* --------------OUTPUT SETTINGS SECTION  ----------------------*/
+#output-settings-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+  /* margin: 15px; */
+}
+
+.output-wrapper {
+  margin: 15px;
+}
+
+#output-settings-wrapper input {
+  font-size: 1rem;
+  padding: 2.5px;
+  color: var(--text-secondary-color);
+  width: 30%;
+}
+
+#output-settings-wrapper input#generateRunLog {
+  width: 18px;
+  height: 18px;
+}
+
+#output-settings-wrapper select {
+  font-size: 1rem;
+  padding: 2.5px;
+  color: var(--text-secondary-color);
+}
+
+#output-settings-wrapper label {
+  display: inline-block;
+  width: 215px;
+}
+
+/* -------------- RUN SECTION  ----------------------*/
+
+#run-script-wrapper {
+  min-height: 100vh;
+}
+
+#run-script-wrapper .main-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+#run-script-wrapper .log-wrapper {
+  width: 100%;
+  height: 90%;
+  /* border: 2px solid lightgray; */
+  margin: 15px 0px;
+}
+
+#run-script-wrapper .py-log {
+  font-size: 1rem;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+  font-family: monospace;
+  white-space: pre-wrap; /* to preserve newlines and formatting */
+}
+
+#run-script-wrapper .py-log:last-child {
+  font-weight: bold;
+}
