@@ -40,7 +40,7 @@ function testFillInput() {
     tabLapseRate: "Tab_LapseRate",
     tabRiskFreeRates: "Tab_RiskFreeRates",
     outputFilePath:
-      "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app",
+      "C:\\Users\\ibrah\\OneDrive\\Documents\\Projects\\life_cashflow_app\\output",
     outputFileName: "pricing_model_py_output",
   };
 
