@@ -1,6 +1,7 @@
 # LIFE ACTUARIAL CASHFLOW MODEL APP
 
-[image of desktop monitor with green theme](public/assets/main-img-wide-jpg.jpg)
+<img src='./public/assets/main-img-wide-jpg.jpg' width='100%' alt="image of desktop monitor with green theme">
+<!-- [image of desktop monitor with green theme](public/assets/main-img-wide-jpg.jpg) -->
 
 ## About
 
