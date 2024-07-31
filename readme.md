@@ -1,6 +1,6 @@
 # LIFE ACTUARIAL CASHFLOW MODEL APP
 
-[image of desktop monitor with green theme](https://raw.githubusercontent.com/ibrahimcode85/life_cashflow_app/main/public/assets/main-img-wide.webp)
+[image of desktop monitor with green theme](public\assets\main-img-wide-jpg.jpg)
 
 ## About
 
