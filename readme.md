@@ -1,6 +1,6 @@
 # LIFE ACTUARIAL CASHFLOW MODEL APP
 
-[image of desktop monitor with green theme](public\assets\main-img-wide.webp)
+[image of desktop monitor with green theme](https://raw.githubusercontent.com/ibrahimcode85/life_cashflow_app/main/public/assets/main-img-wide.webp)
 
 ## About
 
@@ -14,7 +14,7 @@ The main idea for this app is to have a user-friendly interface that could conne
 
 ## Release 1.0.0-beta - Initial Pre-release Preview
 
-This release contains all the basic features to connect excel model and Python scripts.
+This release (https://github.com/ibrahimcode85/life_cashflow_app/releases/tag/v1.0.0-beta) contains all the basic features to connect excel model and Python scripts.
 
 - Path to the excel model can be defined for the app to get the necessary data (i.e. model parameters and tables)
 - The input and tables name used in the excel model can be defined in the app. So users do not need to recreate additional files for the python model to run.
