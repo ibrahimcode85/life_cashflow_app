@@ -1,5 +1,6 @@
 # LIFE ACTUARIAL CASHFLOW MODEL APP
 
+<<<<<<< HEAD
 [image of desktop monitor with green theme](public\assets\main-img-wide-jpg.jpg)
 
 ## About
