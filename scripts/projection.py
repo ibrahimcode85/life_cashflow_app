@@ -199,7 +199,7 @@ def generate_rfr_table(pol_year_df, rfr_table, is_cover_df):
     Returns
     -------
     DataFrame
-        A DataFrame containing annual and monthly risk-free rates for each period.
+        A DataFrame containing annual and monthly risk-free rates for each period. 0 if policy is not inforce.
     """
 
     # Create a dictionary from the rfr_table
@@ -272,15 +272,38 @@ def generate_discount_factor_table(rfr_lookup_df):
     return discount_factor_df
 
 
-"""
-POLICY DECREMENT PROJECTION:
-    - mortality and lapse rates lookup
-    - conversion to monthly decrement rates
-    - calculation of policy count as: Number of Policy at End of Period = Num Policy at Start - Num of Death - Num of Lapse
-"""
+# ================================
+#  DECREMENTS PROJECTION
+# ================================
+# - mortality and lapse rates lookup
+# - conversion to monthly decrement rates
+# - calculation of policy count as: Number of Policy at End of Period = Num Policy at Start - Num of Death - Num of Lapse
 
 
 def generate_mortality_rate_table(age_df, gender, mortality_table, is_cover_df):
+    """
+    Generate a mortality rate table based on age and gender.
+
+    Parameters
+    ----------
+    age_df : DataFrame
+        A DataFrame containing attained ages for each period.
+
+    gender : str
+        The gender of the policyholder ("Male" or "Female").
+
+    mortality_table : DataFrame
+        A DataFrame containing annual mortality rates by age and gender.
+
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each period.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing annual and monthly mortality rates for each period. 0 if policy is not inforce.
+    """
+
     # Create a dictionary from the mortality_table
     mortality_dict = mortality_table.set_index("Age").to_dict(orient="index")
 
@@ -326,6 +349,29 @@ def generate_mortality_rate_table(age_df, gender, mortality_table, is_cover_df):
 
 
 def generate_lapse_rate(pol_year_df, lapse_table, max_pol_year):
+    """
+    Generate a lapse rate table based on policy year.
+
+    Parameters
+    ----------
+    pol_year_df : DataFrame
+        A DataFrame containing policy years.
+
+    lapse_table : DataFrame
+        A DataFrame containing annual lapse rates by policy year.
+
+    max_pol_year : int
+        The maximum policy year considered for lapse rates.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing annual and monthly lapse rates for each period.
+        0 if policy is not inforce.
+        1 if policy year reach maximum policy year.
+
+    """
+
     # Create a dictionary from the lapse_table
     lapse_dict = lapse_table.set_index("Year")["%"].to_dict()
 
@@ -360,6 +406,37 @@ def generate_lapse_rate(pol_year_df, lapse_table, max_pol_year):
 
 
 def generate_policy_count_table(pol_month_df, mortality_rates_df, lapse_rates_df):
+    """
+    Generate a policy count table based on policy month, mortality, and lapse rates.
+
+    Parameters
+    ----------
+    pol_month_df : DataFrame
+        A DataFrame containing policy months.
+
+    mortality_rates_df : DataFrame
+        A DataFrame containing monthly mortality rates.
+
+    lapse_rates_df : DataFrame
+        A DataFrame containing monthly lapse rates.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing policy counts at the start, end, and decrements for each period.
+
+    Notes
+    -------
+    The death and lapse count is calculated by applying the decrement rates to the beginning of period policy count.
+    Assumption is that death and lapse is independent and not competing - so the incidence count is simply the incidence rate
+    applied to opening count without any adjustment for competing incidence rates.
+
+    Number of Death = Num Policy at Start * Death Rate
+    Number of Lapse = Num Policy at Start * Lapse Rate
+    Number of Policy at End of Period = Num Policy at Start - Num of Death - Num of Lapse
+
+    """
+
     # Initialize lists for policy counts
     no_pol_start = [1]  # No_Pol_Start starts with 1
     no_death = []  # To be calculated
@@ -396,14 +473,31 @@ def generate_policy_count_table(pol_month_df, mortality_rates_df, lapse_rates_df
     return policy_count_df
 
 
-"""
-UNIT FUND PER POLICY CASH FLOW PROJECTION:
-    - unit fund cashflow item: Contribution, Wakalah Fee, Insurance Charges, Investment Income and Fund Management Charge.
-    - Unit Fund at End of Period = Unit Fund at Beginning of Period + (Contribution - Wakalah Fee) - Insurance Charge + Investment Income - Fund Management Charge.
-"""
+# ==========================================
+#  UNIT FUND PER POLICY CASH FLOWs PROJECTION
+# ==========================================
+# - Unit fund cashflow item: Contribution, Wakalah Fee, Insurance Charges, Investment Income and Fund Management Charge.
+# - Unit Fund at End of Period = Unit Fund at Beginning of Period + (Contribution - Wakalah Fee) - Insurance Charge + Investment Income - Fund Management Charge.
 
 
 def generate_wakalah_fee_rate(pol_year_df, wakalah_fee_table):
+    """
+    Generate a Wakalah fee rate table based on policy year.
+
+    Parameters
+    ----------
+    pol_year_df : DataFrame
+        A DataFrame containing policy years.
+
+    wakalah_fee_table : DataFrame
+        A DataFrame containing Wakalah fee rates by policy year.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing Wakalah fee rates for each period. 0 if policy is not inforce.
+    """
+
     # Create a dictionary from the wakalah_fee_table
     wakalah_fee_dict = wakalah_fee_table.set_index("Year")["%"].to_dict()
 
@@ -438,6 +532,62 @@ def generate_unit_fund_cashflow_table(
     rfr_df,
     fmc,
 ):
+    """
+    Generate a unit fund cashflow table based on various inputs and assumptions.
+
+    Parameters
+    ----------
+    contribution_per_year : float
+        The annual contribution amount.
+
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each period.
+
+    pol_year_df : DataFrame
+        A DataFrame containing policy years.
+
+    wakalah_fee_table : DataFrame
+        A DataFrame containing Wakalah fee rates by policy year.
+
+    sum_assured : float
+        The sum assured amount.
+
+    mort_rates_df : DataFrame
+        A DataFrame containing monthly mortality rates.
+
+    coi_loading : float
+        The cost of insurance loading factor.
+
+    rfr_df : DataFrame
+        A DataFrame containing monthly risk-free rates.
+
+    fmc : float
+        The fund management charge rate.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing unit fund cashflows for each period. 0 if policy is not inforce.
+
+    Notes
+    -------
+    The table contains each of the unit fund cashflows item:
+    Contribution : cash inflow. A lookup value
+    Wakalah Fee  : cash outflow. A portion of contribution transferred to shareholder as service fee
+                 = Contribution * Wakalah Fee Rate
+    Unit Allocation : cash inflow. The portion of contribution left in the unit fund.
+                    = Contribution - Wakalah Fee.
+    Insurance Charge : cash outflow. The amount transferred to risk fund to pay for insurance coverage.
+                     = Sum Assured * Mortality Rates * (1 + Insurance Charge Loading)
+    Investment Income : cash inflow. The investment income earned on the unit fund
+                      = (Opening Fund + Unit Allocation - Insurance Charge) * Investment Return
+    Investment Charge : cash outflow. The fund management charge deducted as a service fee to manage the unit fund.
+                      = (Opening Fund + Unit Allocation - Insurance Charge + Invesment Income) * Fund Management Charge
+
+    Unit Fund At End of Period =  Unit Fund At Start + Unit Allocation - Insurance Charge + Investment Income - Investment Charge
+
+    """
+
     # Initialize lists for cashflow calculations
     unit_fund_bop_pp = [0]  # Unit_Fund_BOP_PP starts with 0
     contribution_pp = (contribution_per_year / 12) * is_cover_df["is_Cover"]
