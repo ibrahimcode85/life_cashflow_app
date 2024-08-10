@@ -4,22 +4,57 @@ import data_read as read
 
 
 def append_dataframes(df_list):
-    # Concatenate the list of DataFrames along the columns
+    """
+    Take a list of pandas dataframes and combined them along the columns.
+
+    Parameters
+    ----------
+    df_list : List
+        A list of pandas dataframe.
+
+    Returns
+    -------
+    DataFrame
+        Combined dataframe along the columns, based on the order listed in the list.
+
+    Notes
+    -----
+    This function is typically used to get the final cashflows output dataframe to be exported.
+
+    """
     proj_df = pd.concat(df_list, axis=1)
 
     return proj_df
 
 
-"""
-POLICY'S TIME VALUE PROJECTION:
-    - time index projection for 1200 months (i.e. maximum projection is 100 years).
-    - bool to check if the year is within policy coverage period (1= cover, 0 = not-cover).
-    - projection of policy month and policy year.
-    - projection of attained age.
-"""
+# ================================
+#  REFERENCE COLUMNS
+# ================================
+# - time index projection for 1200 months (i.e. maximum projection is 100 years).
+# - bool to check if the year is within policy coverage period (1= cover, 0 = not-cover).
+# - projection of policy month and policy year.
+# - projection of attained age.
 
 
 def generate_t_index_table():
+    """
+    Create a single column dataframe with index number starting from 1 to 1200.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    DataFrame
+        A single column dataframe with index number of 1 to 1200.
+
+    Notes
+    -----
+    The index represent the projection month and for now is capped at 1200 (i.e 100 months).
+    This will be the first column in our cashflows output dataframe and is a time reference for the occurence of the cashflows.
+    """
+
     # Create a sequence of numbers from 1 to 1200
     t_index_values = list(range(1, 1201))
 
@@ -30,6 +65,23 @@ def generate_t_index_table():
 
 
 def generate_is_cover_table(t_index_df, POL_YEAR):
+    """
+    Generate a single column dataframe which contain bool values indicating whether a policy is still inforce that month.
+
+    Parameters
+    ----------
+    t_index_df : DataFrame
+        A DataFrame containing a time index.
+
+    POL_YEAR : int
+        The number of years the policy is covered.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame indicating whether a policy is still inforce that month (1= inforce, 0= not inforce).
+    """
+
     # Create a table of the same dimension as t_index_df
     is_cover_values = [
         1 if value <= POL_YEAR * 12 else 0 for value in t_index_df["T_Index"]
@@ -42,6 +94,22 @@ def generate_is_cover_table(t_index_df, POL_YEAR):
 
 
 def generate_pol_month_table(t_index_df, is_cover_df):
+    """
+    Generate a single column dataframe containing policy month table based on the time index.
+
+    Parameters
+    ----------
+    t_index_df : DataFrame
+        A DataFrame containing a time index.
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each time period.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing policy months. 0 if policy is not inforce.
+    """
+
     # Calculate the product of t_index_df and is_cover_df
     pol_month_values = t_index_df["T_Index"] * is_cover_df["is_Cover"]
 
@@ -52,6 +120,22 @@ def generate_pol_month_table(t_index_df, is_cover_df):
 
 
 def generate_pol_year_table(pol_month_df, is_cover_df):
+    """
+    Generate a single column dataframe containing the policy year value based on the policy month.
+
+    Parameters
+    ----------
+    pol_month_df : DataFrame
+        A DataFrame containing policy months.
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each period.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing policy years. 0 if policy is not inforce.
+    """
+
     # Calculate Pol_Year as ROUNDUP(pol_month_df / 12, 0) * is_cover_df
     pol_year_values = (
         np.ceil(pol_month_df["Pol_Month"] / 12).astype(int) * is_cover_df["is_Cover"]
@@ -64,6 +148,24 @@ def generate_pol_year_table(pol_month_df, is_cover_df):
 
 
 def generate_age_table(pol_year_df, is_cover_df, AGE):
+    """
+    Generate a single column dataframe containing the projected attained age.
+
+    Parameters
+    ----------
+    pol_year_df : DataFrame
+        A DataFrame containing policy years.
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each period.
+    AGE : int
+        The starting age of the policyholder.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing attained age for each period. 0 if policy is not inforce.
+    """
+
     # Calculate Age as (Constant_Age + pol_year_df) * is_cover_df
     age_values = (AGE + pol_year_df["Pol_Year"] - 1) * is_cover_df["is_Cover"]
 
@@ -73,15 +175,33 @@ def generate_age_table(pol_year_df, is_cover_df, AGE):
     return age_df
 
 
-"""
-ECONOMIC RATES PROJECTION:
-    - risk free rates lookup
-    - risk free rates convertion to monthly rates
-    - discount factor calculation
-"""
+# ================================
+#  ECONOMIC RATES PROJECTION
+# ================================
+# - risk free rates lookup
+# - risk free rates convertion to monthly rates
+# - discount factor calculation
 
 
 def generate_rfr_table(pol_year_df, rfr_table, is_cover_df):
+    """
+    Generate a risk-free rates dataframe. Two columns for each annual and monthly basis.
+
+    Parameters
+    ----------
+    pol_year_df : DataFrame
+        A DataFrame containing policy years.
+    rfr_table : DataFrame
+        A DataFrame containing annual risk-free rates.
+    is_cover_df : DataFrame
+        A DataFrame indicating coverage status for each period.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing annual and monthly risk-free rates for each period.
+    """
+
     # Create a dictionary from the rfr_table
     rfr_dict = rfr_table.set_index("Year.1")["rfr p.a."].to_dict()
 
@@ -115,6 +235,20 @@ def generate_rfr_table(pol_year_df, rfr_table, is_cover_df):
 
 
 def generate_discount_factor_table(rfr_lookup_df):
+    """
+    Generate a discount factor table based on monthly risk-free rates.
+
+    Parameters
+    ----------
+    rfr_lookup_df : DataFrame
+        A DataFrame containing monthly risk-free rates.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing discount factors for the beginning and end of each period.
+    """
+
     # Initialize lists for discount factors
     disc_factor_bop = [1.0]  # Beginning of period discount factor
     disc_factor_eop = [
