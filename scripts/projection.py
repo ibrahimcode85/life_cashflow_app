@@ -1,3 +1,14 @@
+"""
+projection.py
+
+This module contains functions for generating projections related to insurance policies, including time indices, 
+coverage status, policy months and years, and various cashflows (e.g., unit fund, risk fund, and shareholder fund projections).
+It also includes functions for calculating economic rates, discount factors, and mortality and lapse rates.
+
+These projections are essential components of the actuarial calculations performed in the `main.py` file, where 
+they are used to evaluate policy values, cashflows, and financial metrics.
+"""
+
 import pandas as pd
 import numpy as np
 import data_read as read
