@@ -572,17 +572,18 @@ def generate_unit_fund_cashflow_table(
     Notes
     -------
     The table contains each of the unit fund cashflows item:
-    Contribution : cash inflow. A lookup value
-    Wakalah Fee  : cash outflow. A portion of contribution transferred to shareholder as service fee
-                 = Contribution * Wakalah Fee Rate
-    Unit Allocation : cash inflow. The portion of contribution left in the unit fund.
-                    = Contribution - Wakalah Fee.
-    Insurance Charge : cash outflow. The amount transferred to risk fund to pay for insurance coverage.
-                     = Sum Assured * Mortality Rates * (1 + Insurance Charge Loading)
-    Investment Income : cash inflow. The investment income earned on the unit fund
-                      = (Opening Fund + Unit Allocation - Insurance Charge) * Investment Return
-    Investment Charge : cash outflow. The fund management charge deducted as a service fee to manage the unit fund.
-                      = (Opening Fund + Unit Allocation - Insurance Charge + Invesment Income) * Fund Management Charge
+
+    Contribution        : cash inflow. A lookup value
+    Wakalah Fee         : cash outflow. A portion of contribution transferred to shareholder as service fee
+                            = Contribution * Wakalah Fee Rate
+    Unit Allocation     : cash inflow. The portion of contribution left in the unit fund.
+                            = Contribution - Wakalah Fee.
+    Insurance Charge    : cash outflow. The amount transferred to risk fund to pay for insurance coverage.
+                            = Sum Assured * Mortality Rates * (1 + Insurance Charge Loading)
+    Investment Income   : cash inflow. The investment income earned on the unit fund
+                            = (Opening Fund + Unit Allocation - Insurance Charge) * Investment Return
+    Investment Charge   : cash outflow. The fund management charge deducted as a service fee to manage the unit fund.
+                            = (Opening Fund + Unit Allocation - Insurance Charge + Invesment Income) * Fund Management Charge
 
     Unit Fund At End of Period =  Unit Fund At Start + Unit Allocation - Insurance Charge + Investment Income - Investment Charge
 
@@ -646,12 +647,12 @@ def generate_unit_fund_cashflow_table(
     return unit_cashflow_df
 
 
-"""
-RISK FUND PER POLICY CASH FLOW PROJECTION:
-    - Risk fund cashflow item:  Insurance Charges, Claims, Investment Income, Surplus to Shareholder and Surplus to Participant
-    - Risk Fund at End of Period = Risk Fund at Beginning of Period + Insurance Charge + Investment Income - Surplus to Shareholder - Surplus to Participant.
-    - Assume surplus as cash pay-out to policyholders instead of credited to unit fund.
-"""
+# ==========================================
+# RISK FUND PER POLICY CASH FLOWs PROJECTION
+# ==========================================
+# - Risk fund cashflow item:  Insurance Charges, Claims, Investment Income, Surplus to Shareholder and Surplus to Participant
+# - Risk Fund at End of Period = Risk Fund at Beginning of Period + Insurance Charge + Investment Income - Surplus to Shareholder - Surplus to Participant.
+# - Assume surplus as cash pay-out to policyholders instead of credited to unit fund.
 
 
 def generate_risk_fund_cashflows_table(
@@ -662,6 +663,54 @@ def generate_risk_fund_cashflows_table(
     surplus_share_to_shf,
     surplus_share_to_participant,
 ):
+    """
+    Generate a risk fund cashflow table based on various inputs and assumptions.
+
+    Parameters
+    ----------
+    unit_cashflow_df : DataFrame
+        A DataFrame containing unit fund cashflows for each period.
+
+    mort_rates_df : DataFrame
+        A DataFrame containing monthly mortality rates. Used as basis to compute the insurance claims.
+
+    rfr_df : DataFrame
+        A DataFrame containing monthly risk-free rates.
+
+    sum_assured : float
+        The sum assured amount.
+
+    surplus_share_to_shf : float
+        The surplus share to shareholder factor.
+
+    surplus_share_to_participant : float
+        The surplus share to participant factor.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing risk fund cashflows for each period.
+
+    Notes
+    -------
+    The table contains each of the risk fund cashflows item:
+
+    Insurance Charge            : cash inflow. The amount transferred to risk fund to pay for insurance coverage.
+                                    = Sum Assured * Mortality Rates * (1 + Insurance Charge Loading)
+    Insurance Claims            : cash outflow. The expected claim amount paid from risk fund.
+                                    = Sum Assured * No_Death
+    Investment Income           : cash inflow. The investment income earned on the unit fund
+                                    = (Opening Fund + Insurance Charge - Claims) * Investment Return
+    Surplus Transfer to SH      : cash outflow. The amount of surplus transferred to shareholder fund (SH)
+                                    = (Insurance Charge - Claims + Investment Income) * SH Transfer Ratio
+    Surplus Transfer to Partpnt : cash outflow. The amount of surplus transferred to Participant (RF)
+                                    = (Insurance Charge - Claims + Investment Income) * RF Transfer Ratio
+
+    Risk Fund At End of Period =  Risk Fund At Start +  Insurance Charge - Claims + Investment Income
+                                    - Surplus Transfer to SH - Surplus Transfer to RF
+
+    """
+
     # Initialize lists for risk fund calculations
     risk_fund_bop_pp = [0]  # Risk_Fund_BOP_PP starts with 0
     insurance_charge_pp = unit_cashflow_df["Insurance_Charge_PP"]
@@ -723,11 +772,11 @@ def generate_risk_fund_cashflows_table(
     return risk_fund_cashflow_df
 
 
-"""
-SHAREHOLDERS' FUND (SHF) PER POLICY CASH FLOW PROJECTION:
-    - SHF fund cashflow item:  Wakalah Fee, Expenses, Fund Management Fee, Fund Expenses, Investment Income and Surplus to Shareholder.
-    - Profit = Wakalah Fee - Expenses + Fund Management Fee - Fund Expenses + Investment Income +  Surplus to Shareholder.
-"""
+# ===================================================
+# SHAREHOLDERS' FUND PER POLICY CASH FLOWs PROJECTION
+# ===================================================
+# - SHF fund cashflow item:  Wakalah Fee, Expenses, Fund Management Fee, Fund Expenses, Investment Income and Surplus to Shareholder.
+# - Profit = Wakalah Fee - Expenses + Fund Management Fee - Fund Expenses + Investment Income +  Surplus to Shareholder.
 
 
 def generate_shf_cashflows(
@@ -737,6 +786,51 @@ def generate_shf_cashflows(
     expense_per_contribution_per_year,
     expense_per_fund_per_year,
 ):
+    """
+    Generate a shareholder's fund cashflow table based on various inputs and assumptions.
+
+    Parameters
+    ----------
+    unit_cashflow_df : DataFrame
+        A DataFrame containing unit fund cashflows for each period.
+
+    rfr_df : DataFrame
+        A DataFrame containing monthly risk-free rates.
+
+    risk_fund_df : DataFrame
+        A DataFrame containing risk fund cashflows for each period.
+
+    expense_per_contribution_per_year : float
+        The expense rate per contribution per year.
+
+    expense_per_fund_per_year : float
+        The expense rate per fund per year.
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing shareholder's fund cashflows for each period.
+
+    Notes
+    -------
+    The table contains each of the shareholders' fund cashflows item:
+
+    Wakalah Fee             : cash inflow. A portion of contribution transferred to shareholder as service fee
+                                = Contribution * Wakalah Fee Rate
+    Expenses                : cash outflow. The expected expenses.
+                                = Fixed expense per year.
+    Investment Charge       : cash inflow. The fund management charge deducted as a service fee to manage the unit fund.
+                                = Investment Charge deducted from Unit Fund.
+    Investment Expense      : cash outflow. The fund management expense to cover the cost of managing the unit fund.
+                                = Unit fund at End of Period * Investment Expense %
+    Investment Income       : cash inflow. The investment income earned on the shareholders.
+                                = (Wakalah Fee - Expenses) * Investment Return
+    Surplus Transfer to SH  : cash inflow. The amount of surplus transferred to shareholder fund (SH)
+                                = Surplus transferred from Risk Fund.
+
+    Profit =  Wakalah Fee - Expense + Investment Charge - Investment Expense + Investment Income + Surplus from Risk Fund
+    """
+
     # Initialize lists for SHF cashflow calculations
     wakalah_fee_pp = unit_cashflow_df["Wakalah_Fee_PP"]
     expenses_pp = unit_cashflow_df["Contribution_PP"] * (
@@ -779,16 +873,47 @@ def generate_shf_cashflows(
     return shf_cashflow_df
 
 
-"""
-INFORCE CASH FLOW PROJECTION:
-    - multiply the per-policy tables with the probability inforce at start of period.
-    - please note the column name in per-policy table must contain the string '_PP' to indicate that they are
-        a per-policy cashflow item that require conversion to inforce '_IF'. 
-        This is to differentiate with non-cashflow item such as rates, age, policy year, month etc.
-"""
+# ===================================================
+# INFORCE CASH FLOWs PROJECTION
+# ===================================================
+# - multiply the per-policy tables with the probability inforce at start of period.
+# - please note the column name in per-policy table must contain the string '_PP' to indicate that they are
+#   a per-policy cashflow item that require conversion to inforce '_IF'.
+#   This is to differentiate with non-cashflow item such as rates, age, policy year, month etc.
 
 
 def generate_cashflow_if_df(cashflow_df, policy_count_df, log_list, is_unit_fund=False):
+    """
+    Generate a inforce cashflow table based on per policy dataframe.
+
+    Parameters
+    ----------
+    cashflow_df : DataFrame
+        A DataFrame containing per policy cashflows for each period.
+
+    policy_count_df : DataFrame
+        A DataFrame containing monthly risk-free rates.
+
+    log_list : List
+        A list containing a collection of log messages to be printed.
+
+    is_unit_fund : bool
+        Indicator whether the cashflow is a unit fund or not. (True = Unit Fund)
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing inforce cashflows for each period.
+
+    Notes
+    -------
+    The function will loop through each column.
+    If the column header contains the string "_PP" (indicating a per-policy cashflows),
+    the column will be multiplied by inforce factor for the period.
+
+    Inforce Cashflow = Per Policy Cashflow * No Policy At End of Period
+
+    """
     # Initialize an empty dictionary to store the new columns
     cashflow_if_dict = {}
 
@@ -849,7 +974,34 @@ def generate_cashflow_if_df(cashflow_df, policy_count_df, log_list, is_unit_fund
     return cashflow_if_df, log_list
 
 
+# =====================
+# DISCOUNTED CASH FLOW
+# =====================
+
+
 def generate_pv_cashflows_df(cashflow_df, disc_fac_df):
+    """
+    Generate a discounted value at start of projection for the relevant cashflow item.
+
+    Parameters
+    ----------
+    cashflow_df : DataFrame
+        A DataFrame containing per policy cashflows for each period.
+
+    disc_fac_df : DataFrame
+        A DataFrame containing the discount factor for each period.
+
+
+    Returns
+    -------
+    DataFrame
+        A DataFrame containing discounted value of selected cashflow.
+
+    Notes
+    -------
+    PV Cashflow = Sum Product of (Array of Projected Cashflow , Array of Discount Factor)
+    """
+
     # initialize timing dictionary and empty list
     cf_timing_dict = {
         # for unit fund
