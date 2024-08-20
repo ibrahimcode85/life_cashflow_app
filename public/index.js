@@ -157,16 +157,18 @@ document.addEventListener("DOMContentLoaded", function () {
   showSection("home");
 });
 
+let workbook, sheetName, selectedCell1, selectedCell2;
+
 document.getElementById("filePath").addEventListener("change", function (e) {
   const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.onload = function (event) {
     const data = new Uint8Array(event.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
+    workbook = XLSX.read(data, { type: "array" });
 
     // Get the first worksheet
-    const sheetName = workbook.SheetNames[0];
+    sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
 
     // Extract the range of the worksheet
@@ -174,17 +176,19 @@ document.getElementById("filePath").addEventListener("change", function (e) {
     const maxRow = range.e.r;
     const maxCol = range.e.c;
 
-    let html = '<table border="1" cellpadding="5">';
+    let html = `
+          <button id="selectRangeBtn">Select Input Cell Range</button>
+          <div id="excelData">
+              <table border="1" cellpadding="5">
+                  <thead><tr><th></th>`; // Top-left empty cell
 
     // Generate the column headers (A, B, C, ...)
-    html += "<thead><tr><th></th>"; // Top-left empty cell
     for (let col = 0; col <= maxCol; col++) {
       html += `<th>${String.fromCharCode(65 + col)}</th>`;
     }
-    html += "</tr></thead>";
+    html += "</tr></thead><tbody>";
 
     // Generate the rows with row headers
-    html += "<tbody>";
     for (let row = 0; row <= maxRow; row++) {
       html += `<tr><th>${row + 1}</th>`; // Row header
       for (let col = 0; col <= maxCol; col++) {
@@ -193,13 +197,17 @@ document.getElementById("filePath").addEventListener("change", function (e) {
         const cellValue = cell ? cell.v : "";
 
         // Check if the cell is empty and apply light grey background if it is
-        const cellStyle = cellValue === "" ? "background-color: #f2f2f2;" : "";
+        const cellStyle =
+          cellValue === "" ? "background-color: lightgrey;" : "";
 
-        html += `<td style="${cellStyle}">${cellValue}</td>`;
+        // Generate the cell ID based on its address (e.g., A1, B2, etc.)
+        const cellId = `${String.fromCharCode(65 + col)}${row + 1}`;
+
+        html += `<td id="${cellId}" style="${cellStyle}">${cellValue}</td>`;
       }
       html += "</tr>";
     }
-    html += "</tbody></table>";
+    html += "</tbody></table></div>";
 
     // Open a new tab
     const newTab = window.open("", "_blank");
@@ -221,13 +229,59 @@ document.getElementById("filePath").addEventListener("change", function (e) {
                       text-align: left;
                   }
                   th {
-                      background-color: #f2f2f2;
+                      color: #ffffff;
+                      background-color: #268157;
                   }
               </style>
           </head>
           <body>
               <h2>Excel Content</h2>
               ${html}
+              <script>
+                  let selectedCell1 = null;
+                  let selectedCell2 = null;
+
+                  function addCellClickListeners() {
+                      const cells = document.querySelectorAll('#excelData td');
+                      cells.forEach(cell => {
+                          cell.addEventListener('click', handleCellClick);
+                      });
+                  }
+
+                  function handleCellClick(event) {
+                      const cellId = event.target.id;
+
+                      if (!selectedCell1) {
+                          selectedCell1 = cellId;
+                          alert('First cell selected: ' + selectedCell1);
+                          const selectSecondCell = confirm('Do you want to select a second cell range?');
+                          if (!selectSecondCell) {
+                              alert('Selected range: ${sheetName}!' + selectedCell1);
+                              resetSelection();
+                          } else {
+                              alert('Select the second cell.');
+                          }
+                      } else if (!selectedCell2) {
+                          selectedCell2 = cellId;
+                          alert('Second cell selected: ' + selectedCell2);
+                          alert('Selected range: ${sheetName}!' + selectedCell1 + ':' + selectedCell2);
+                          resetSelection();
+                      }
+                  }
+
+                  function resetSelection() {
+                      selectedCell1 = null;
+                      selectedCell2 = null;
+                  }
+
+                  document.getElementById('selectRangeBtn').addEventListener('click', function() {
+                      alert('Please select the first cell.');
+                      selectedCell1 = null;
+                      selectedCell2 = null;
+                  });
+
+                  addCellClickListeners();
+              </script>
           </body>
           </html>
       `);
