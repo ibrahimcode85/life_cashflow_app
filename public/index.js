@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // Fill the input field for testing. Commented if not in use.
-testFillInput();
+// testFillInput();
 
 document.addEventListener("DOMContentLoaded", function () {
   const navItems = document.querySelectorAll(".nav-item-wrapper");
@@ -155,4 +155,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial display setup - show the home section
   showSection("home");
+});
+
+document.getElementById("filePath").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const data = new Uint8Array(event.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+
+    // Get the first worksheet
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    // Extract the range of the worksheet
+    const range = XLSX.utils.decode_range(worksheet["!ref"]);
+    const maxRow = range.e.r;
+    const maxCol = range.e.c;
+
+    let html = '<table border="1" cellpadding="5">';
+
+    // Generate the column headers (A, B, C, ...)
+    html += "<thead><tr><th></th>"; // Top-left empty cell
+    for (let col = 0; col <= maxCol; col++) {
+      html += `<th>${String.fromCharCode(65 + col)}</th>`;
+    }
+    html += "</tr></thead>";
+
+    // Generate the rows with row headers
+    html += "<tbody>";
+    for (let row = 0; row <= maxRow; row++) {
+      html += `<tr><th>${row + 1}</th>`; // Row header
+      for (let col = 0; col <= maxCol; col++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: row, c: col });
+        const cell = worksheet[cellAddress];
+        const cellValue = cell ? cell.v : "";
+
+        // Check if the cell is empty and apply light grey background if it is
+        const cellStyle = cellValue === "" ? "background-color: #f2f2f2;" : "";
+
+        html += `<td style="${cellStyle}">${cellValue}</td>`;
+      }
+      html += "</tr>";
+    }
+    html += "</tbody></table>";
+
+    // Open a new tab
+    const newTab = window.open("", "_blank");
+    newTab.document.write(`
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Excel Content</title>
+              <style>
+                  table {
+                      width: 100%;
+                      border-collapse: collapse;
+                  }
+                  th, td {
+                      border: 1px solid black;
+                      padding: 5px;
+                      text-align: left;
+                  }
+                  th {
+                      background-color: #f2f2f2;
+                  }
+              </style>
+          </head>
+          <body>
+              <h2>Excel Content</h2>
+              ${html}
+          </body>
+          </html>
+      `);
+    newTab.document.close();
+  };
+
+  reader.readAsArrayBuffer(file);
 });

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <title>Life Cashflow Projection</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
   </head>
   <body>
     <nav class="navbar">
@@ -81,13 +82,8 @@
         <div class="user-input">
           <div class="input-wrapper" id="file-path">
             <label for="filePath">Excel File Path</label>
-            <input
-              type="text"
-              id="filePath"
-              name="filePath"
-              required
-              placeholder="C:\Users\ibrah\OneDrive\Documents\Projects\life_cashflow_app"
-            />
+            <input type="file" id="filePath" accept=".xlsx, .xls" />
+            <div id="excelData"></div>
           </div>
           <div class="input-wrapper" id="person-covered-profile">
             <div class="input-title">Person Covered's Profile</div>
